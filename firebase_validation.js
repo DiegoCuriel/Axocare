@@ -21,7 +21,7 @@ const app = initializeApp(firebaseConfig);
 function write_db() {
     console.log("DEBUG: Write function");
     var db = getDatabase();
-    var create_db_table = ref(db, 'ea/' + 'algo/');
+    var create_db_table = ref(db, 'sensores/');
     var user_name = document.getElementById("user_name").value;
     var user_password =  document.getElementById("user_name_password").value;
     if( user_name == '' || user_password == ''){
@@ -29,7 +29,7 @@ function write_db() {
         console.log("Make sure, must be non-empty data is required!!!");
         throw "Make sure, must be non-empty data is required!!!";
     }
-    set(ref(db, 'ea/' + 'algo/'), {
+    set(ref(db, 'sensores/'), {
       user_name: user_name,
       user_name_password: user_password
     }).then((res) => {
@@ -45,7 +45,7 @@ function write_db() {
 /***** read data from firebase *****/
 function read_db() {
     var db = getDatabase();
-    var connect_db = ref(db, 'ea/' + 'algo/');
+    var connect_db = ref(db, 'sensores/');
     var retrieve_data='';
     console.log("DEBUG: Read function");
     onValue(connect_db, (snapshot) => {
