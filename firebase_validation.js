@@ -22,16 +22,16 @@ function write_db() {
     console.log("DEBUG: Write function");
     var db = getDatabase();
     var create_db_table = ref(db, 'sensores/');
-    var user_name = document.getElementById("user_name").value;
-    var user_password =  document.getElementById("user_name_password").value;
-    if( user_name == '' || user_password == ''){
+    var temperatura = document.getElementById("temperatura").value;
+    var ph =  document.getElementById("ph").value;
+    if( temperatura == '' || ph == ''){
         alert("Make sure, must be non-empty data is required!!!");
         console.log("Make sure, must be non-empty data is required!!!");
         throw "Make sure, must be non-empty data is required!!!";
     }
     set(ref(db, 'sensores/'), {
-      user_name: user_name,
-      user_name_password: user_password
+      temperatura: temperatura,
+      ph: ph
     }).then((res) => {
         console.log();
     })
@@ -50,11 +50,11 @@ function read_db() {
     console.log("DEBUG: Read function");
     onValue(connect_db, (snapshot) => {
         retrieve_data = snapshot.val();
-        //console.log("user_name: " + retrieve_data.user_name);
-        //console.log("user_name_password: " + retrieve_data.user_name_password);
+        //console.log("temperatura: " + retrieve_data.temperatura);
+        //console.log("ph: " + retrieve_data.ph);
         call_loop_print(retrieve_data);
-        document.getElementById("display_read_data").innerHTML =  "<pre>" + "user_name: " + retrieve_data.user_name +
-                '\n' + "user_name_password: " + retrieve_data.user_name_password + "</pre>";
+        document.getElementById("display_read_data").innerHTML =  "<pre>" + "temperatura: " + retrieve_data.temperatura +
+                '\n' + "ph: " + retrieve_data.ph + "</pre>";
         })
     function call_loop_print(retrieve_data){
         for (var r=0;r<Object.entries(retrieve_data).length;r++){
