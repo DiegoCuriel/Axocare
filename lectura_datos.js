@@ -1,5 +1,3 @@
-/***** ..codeauthor:: Muthukumar Subramanian *****/
-/*****  HTML JavaScript to Write and Read on the Google Firebase *****/
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";
 import { getDatabase, ref, set, child, update, remove, onValue } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-database.js";
 
@@ -20,7 +18,6 @@ const app = initializeApp(firebaseConfig);
 
 /***** Funciones *****/
 
-/***** write data to firebase *****/
 function write_db() {
     console.log("DEBUG: Write function");
     var db = getDatabase();
@@ -51,7 +48,6 @@ function write_db() {
     })
 }
 
-/***** read data from firebase *****/
 function read_db() {
     var db = getDatabase();
     var connect_db = ref(db, 'sensores/');
