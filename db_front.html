@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="data:,">
-    <!--   Add your favorite css    -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="meyawo.css">
     <title>Firebase read and write</title>
 </head>
 
@@ -26,25 +25,128 @@ h1 {
     }
 </style>
 
-<body>
-    <h1>Axolotlpikxi - Realtime db</h1>
-    <div class="esp32_web_server_login_page_top">
-        <input type="text" placeholder="Temperatura" id="temperatura">
-        <input type="text" placeholder="Ph" id="ph">
-        <input type="text" placeholder="Calentador" id="calentador">
-        <input type="text" placeholder="Filtro de agua" id="filtro">
-        <input type="text" placeholder="Ventiladores" id="ventiladores">
-        <div>
-              <button id="write_data_to_firebase">Sobrescribir datos</button>
-        </div>
-        <div>
-              <button id="read_data_from_firebase">Cargar datos</button>
-        </div>
-    </div>
-    <div class="firebase_display_text">
-        <h2><<<----- Lectura de datos ----->>></h2>
-        <p id="display_read_data">No data</p>
-    </div>
-<script src="lectura_datos.js" type="module"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Start your development with Meyawo landing page.">
+    <meta name="author" content="Devcrud">
+    <title>Axolotl Pikxi</title>
+    <!-- font icons -->
+    <link rel="stylesheet" href="assets/vendors/themify-icons/css/themify-icons.css">
+    <!-- Bootstrap + Meyawo main styles -->
+	<link rel="stylesheet" href="assets/css/meyawo.css">
+</head>
+<body data-spy="scroll" data-target=".navbar" data-offset="40" id="home">
+
+    <!-- Page Navbar -->
+    <nav class="custom-navbar" data-spy="affix" data-offset-top="20">
+        <div class="container">
+            <a class="logo" href="#">Axolotlpikxi</a>         
+            <ul class="nav">
+                <li class="item">
+                    <a class="link" href="#home">Home</a>
+                </li>
+                <li class="item">
+                    <a class="link" href="#about">About</a>
+                </li>
+                <li class="item">
+                    <a class="link" href="#portfolio">Portfolio</a>
+                </li>
+                <li class="item">
+                    <a class="link" href="#testmonial">Testmonial</a>
+                </li>
+                <li class="item">
+                    <a class="link" href="#blog">Blog</a>
+                </li>
+                <li class="item">
+                    <a class="link" href="#contact">Contact</a>
+                </li>
+                <li class="item ml-md-3">
+                    <a href="components.html" class="btn btn-primary">Components</a>
+                </li>
+            </ul>
+            <a href="javascript:void(0)" id="nav-toggle" class="hamburger hamburger--elastic">
+                <div class="hamburger-box">
+                  <div class="hamburger-inner"></div>
+                </div>
+            </a>
+        </div>          
+    </nav><!-- End of Page Navbar -->
+
+    <!-- page header -->
+    <header id="home" class="header">
+        <div class="overlay"></div>
+        <div class="header-content container">
+            <h1 class="header-title">
+                <span class="up">Bienvenido a Axolotl Pikxi</span>
+        </div>              
+    </header><!-- end of page header -->
+
+     <!-- about section -->
+     <section class="section pt-0" id="about">
+        <!-- container -->
+        <div class="container text-center">
+            <!-- about wrapper -->
+            <div class="about">
+                <div class="about-img-holder">
+                    <img src="axologoOf.png" class="about-img" alt="Download free bootstrap 4 landing page, free boootstrap 4 templates, Download free bootstrap 4.1 landing page, free boootstrap 4.1.1 templates, meyawo Landing page">
+                </div>
+                <div class="about-caption">
+                    <h1>Axolotlpikxi</h1>
+                    <div class="esp32_web_server_login_page_top">
+                        <input type="text" placeholder="Temperatura" id="temperatura">
+                        <input type="text" placeholder="Ph" id="ph">
+                        <input type="text" placeholder="Calentador" id="calentador">
+                        <input type="text" placeholder="Filtro de agua" id="filtro">
+                        <input type="text" placeholder="Ventiladores" id="ventiladores">
+                        <div>
+                              <button id="write_data_to_firebase">Sobrescribir datos</button>
+                        </div>
+                        <div>
+                              <button id="read_data_from_firebase">Cargar datos</button>
+                        </div>
+                    </div>
+                    <div class="firebase_display_text">
+                        <h2><<<----- Lectura de datos ----->>></h2>
+                        <p id="display_read_data">No data</p>
+                    </div>
+                <script src="lectura_datos.js" type="module"></script>
+                    <h2 class="section-title mb-3">Los ajolotes: </h2>
+                    <p>
+                        El ajolote, es una especie de anfibio caudado ambistomátido del género Ambystoma relacionado con la salamandra tigre.​​ Fue descrito originalmente por George Kearsley Shaw y Frederick Polydore Nodder. Es endémico del sistema​ 
+                        <br>lacustre de la Cuenca de México y ha tenido una gran influencia en la cultura mexicana.               
+                    </p>
+                </div>              
+            </div><!-- end of about wrapper -->
+        </div><!-- end of container -->
+    </section> <!-- end of about section -->
+
+    <!-- footer -->
+    <div class="container">
+        <footer class="footer">       
+            <p class="mb-0">Copyright <script>document.write(new Date().getFullYear())</script> &copy; <a href="https://github.com/BenjaGood">Fabrica de reales SA. de CV.</a></p>
+            <div class="social-links text-right m-auto ml-sm-auto">
+                <a href="javascript:void(0)" class="link"><i class="ti-facebook"></i></a>
+                <a href="javascript:void(0)" class="link"><i class="ti-twitter-alt"></i></a>
+                <a href="javascript:void(0)" class="link"><i class="ti-google"></i></a>
+                <a href="javascript:void(0)" class="link"><i class="ti-pinterest-alt"></i></a>
+                <a href="javascript:void(0)" class="link"><i class="ti-instagram"></i></a>
+                <a href="javascript:void(0)" class="link"><i class="ti-rss"></i></a>
+            </div>
+        </footer>
+    </div> <!-- end of page footer -->
+	
+	<!-- core  -->
+    <script src="assets/vendors/jquery/jquery-3.4.1.js"></script>
+    <script src="assets/vendors/bootstrap/bootstrap.bundle.js"></script>
+
+    <!-- bootstrap 3 affix -->
+	<script src="assets/vendors/bootstrap/bootstrap.affix.js"></script>
+
+    <!-- Meyawo js -->
+    <script src="assets/js/meyawo.js"></script>
+
 </body>
 </html>
