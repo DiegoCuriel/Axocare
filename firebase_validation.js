@@ -17,6 +17,9 @@ const firebaseConfig = {
 /***** Initialize Firebase *****/
 const app = initializeApp(firebaseConfig);
 
+
+/***** Funciones *****/
+
 /***** write data to firebase *****/
 function write_db() {
     console.log("DEBUG: Write function");
@@ -24,14 +27,20 @@ function write_db() {
     var create_db_table = ref(db, 'sensores/');
     var temperatura = document.getElementById("temperatura").value;
     var ph =  document.getElementById("ph").value;
-    if( temperatura == '' || ph == ''){
+    var calentador =  document.getElementById("calentador").value;
+    var filtro =  document.getElementById("filtro").value;
+    var ventiladores =  document.getElementById("ventiladores").value;
+    if( temperatura == '' || ph == '' || calentador == '' || filtro == '' || ventiladores == '' ){
         alert("Make sure, must be non-empty data is required!!!");
         console.log("Make sure, must be non-empty data is required!!!");
         throw "Make sure, must be non-empty data is required!!!";
     }
     set(ref(db, 'sensores/'), {
       temperatura: temperatura,
-      ph: ph
+      ph: ph,
+      calentador: calentador,
+      filtro: filtro,
+      ventiladores: ventiladores
     }).then((res) => {
         console.log();
     })
@@ -54,7 +63,9 @@ function read_db() {
         //console.log("ph: " + retrieve_data.ph);
         call_loop_print(retrieve_data);
         document.getElementById("display_read_data").innerHTML =  "<pre>" + "temperatura: " + retrieve_data.temperatura +
-                '\n' + "ph: " + retrieve_data.ph + "</pre>";
+                '\n' + "ph: " + retrieve_data.ph + "</pre>" + "calentador: " + retrieve_data.calentador +
+                '\n' + "<pre>" + "filtro: " + retrieve_data.filtro +
+                '\n' + "<pre>" + "ventiladores: " + retrieve_data.ventiladores + "<pre>";
         })
     function call_loop_print(retrieve_data){
         for (var r=0;r<Object.entries(retrieve_data).length;r++){
