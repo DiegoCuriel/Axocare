@@ -96,13 +96,9 @@ h1 {
                 <div class="about-caption">
                     <h1>Axolotlpikxi</h1>
                     <div class="esp32_web_server_login_page_top">
-                        <input type="text" placeholder="Temperatura" id="temperatura">
-                        <input type="text" placeholder="Ph" id="ph">
-                        <input type="text" placeholder="Calentador" id="calentador">
-                        <input type="text" placeholder="Filtro de agua" id="filtro">
-                        <input type="text" placeholder="Ventiladores" id="ventiladores">
+                        <input type="text" placeholder="On / Off" id="onoff">
                         <div>
-                              <button id="write_data_to_firebase">Sobrescribir datos</button>
+                              <button id="write_data_to_firebase">Actualizar estatus</button>
                         </div>
                         <div>
                               <button id="read_data_from_firebase">Cargar datos</button>
@@ -110,7 +106,7 @@ h1 {
                     </div>
                     <div class="firebase_display_text">
                         <h2><<<----- Lectura de datos ----->>></h2>
-                        <p id="display_read_data">No data</p>
+                        <p id="display_read_data">Favor de cargar datos</p>
                     </div>
                 <script src="lectura_datos.js" type="module"></script>
                     <h2 class="section-title mb-3">Los ajolotes: </h2>

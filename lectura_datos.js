@@ -21,23 +21,15 @@ const app = initializeApp(firebaseConfig);
 function write_db() {
     console.log("DEBUG: Write function");
     var db = getDatabase();
-    var create_db_table = ref(db, 'sensores/');
-    var temperatura = document.getElementById("temperatura").value;
-    var ph =  document.getElementById("ph").value;
-    var calentador =  document.getElementById("calentador").value;
-    var filtro =  document.getElementById("filtro").value;
-    var ventiladores =  document.getElementById("ventiladores").value;
-    if( temperatura == '' || ph == '' || calentador == '' || filtro == '' || ventiladores == '' ){
-        alert("Make sure, must be non-empty data is required!!!");
-        console.log("Make sure, must be non-empty data is required!!!");
-        throw "Make sure, must be non-empty data is required!!!";
+    var create_db_table = ref(db, 'status/');
+    var onoff = document.getElementById("onoff").value;
+    if(onoff != "0" && onoff != "1"){
+        alert("Input invalido, insertar 0 o 1.");
+        console.log("Input invalido, insertar 0 o 1.");
+        throw "Input invalido, insertar 0 o 1.";
     }
-    set(ref(db, 'sensores/'), {
-      temperatura: temperatura,
-      ph: ph,
-      calentador: calentador,
-      filtro: filtro,
-      ventiladores: ventiladores
+    set(ref(db, 'status/'), {
+      onoff: onoff
     }).then((res) => {
         console.log();
     })
