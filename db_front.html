@@ -22,8 +22,11 @@ h1 {
         left: 50%;
         -ms-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
-    }
+}
+
+
 </style>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -96,15 +99,23 @@ h1 {
                 <div class="about-caption">
                     <h1>Axolotlpikxi</h1>
                     <div class="esp32_web_server_login_page_top">
-                        <input type="text" placeholder="On / Off" id="onoff">
-                        <div>
-                              <button id="write_data_to_firebase">Actualizar estatus</button>
+                        <div style="margin: 0px auto;">
+                        <select id="onoff">
+                            <option disabled selected =" On / Off"></option>
+                            <option value="1"> On </option>
+                            <option value="0"> Off </option>
+                        </select>
+                        <button id="write_data_to_firebase">Actualizar estatus</button>
+                        <p style="margin-top: 3px; margin-left: auto;" >
+                        <button id="read_data_from_firebase">Cargar datos</button>
+                        </p>
                         </div>
                         <div>
                               <button id="read_data_from_firebase">Cargar datos</button>
+
                         </div>
                     </div>
-                    <div class="firebase_display_text">
+                    <div class="firebase_display_text" style="height: 700px;">
                         <h2><<<----- Lectura de datos ----->>></h2>
                         <p id="display_read_data">Favor de cargar datos</p>
                     </div>
