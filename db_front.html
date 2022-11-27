@@ -22,8 +22,32 @@ h1 {
         left: 50%;
         -ms-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
-    }
+        padding-bottom: 200px;
+}
+.esp32_web_server_login_page_top{
+        
+        display: flex;
+        align-items: baseline;
+        justify-content: center;
+        border-radius: 8px;
+        margin: 0;
+        width: auto;
+        height: 170px;
+
+}
+
+.loading_base_data_boton{
+    
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        border-radius: 8px;
+        height: 30px;
+    
+}
+
 </style>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -79,7 +103,7 @@ h1 {
     <header id="home" class="header">
         <div class="overlay"></div>
         <div class="header-content container">
-            <h1 class="header-title">
+            <h1 class="header-title" style="margin-bottom: 120px;">
                 <span class="up">Bienvenido a Axolotl Pikxi</span>
         </div>              
     </header><!-- end of page header -->
@@ -96,15 +120,19 @@ h1 {
                 <div class="about-caption">
                     <h1>Axolotlpikxi</h1>
                     <div class="esp32_web_server_login_page_top">
-                        <input type="text" placeholder="On / Off" id="onoff">
                         <div>
-                            <button id="write_data_to_firebase">Actualizar estatus</button>
-                        </div>
-                        <div>
+                        <select id="onoff">
+                            <option selected disable style="color: lightslategray"> On / Off </option>  
+                            <option value="1"> On </option>
+                            <option value="0"> Off </option>
+                        </select>
+                        <button id="write_data_to_firebase">Actualizar estatus</button>
+                            <div class="loading_base_data_boton">
                             <button id="read_data_from_firebase">Cargar datos</button>
+                            </div>
                         </div>
                     </div>
-                    <div class="firebase_display_text">
+                    <div class="firebase_display_text" >
                         <h2><<<----- Lectura de datos ----->>></h2>
                         <p id="display_read_data">Favor de cargar datos</p>
                     </div>
