@@ -26,7 +26,7 @@ URL de la misma
 #define API_KEY "AIzaSyD9AGB7gseobpK5GBhH5czsYmN8mAdcqw8"
 #define DATABASE_URL "https://axolotl-4c586-default-rtdb.firebaseio.com/" 
 
-//Definir 
+//Definir  
 FirebaseData fbdo;
 
 FirebaseAuth auth;
@@ -41,7 +41,7 @@ char *Object_Type[]={"Object","Ambient"};
 const int ventilador1 = 19;
 const int ventilador2 = 18;
 const int ventilador3 = 5;
-const int calentador = 4;
+const int calentador = 0;
 const int filtro = 2;
 // Valores necesarios para el uso del sensor de PH
 float calibration_value = 20.34-0.7;
@@ -78,104 +78,211 @@ void setup() {
   config.database_url = DATABASE_URL;
   config.token_status_callback = tokenStatusCallback;
   Firebase.reconnectWiFi(true);
-  if(Firebase.signUp(&config, &auth, "", "")){
-    Serial.println("ok");
-    signupOK = true;
-  }
-  else{
+  while(!Firebase.signUp(&config, &auth, "", "")){
     Serial.printf("%s\n", config.signer.signupError.message.c_str());
+    delay(100);
   }
+  Serial.println("ok");
+  signupOK = true;
+ 
   Firebase.begin(&config, &auth);
 
 }
 void loop() {
-  
-
-  // Programacion para sensor de PH
-  float ph_act= 6.97 + ((7.03-6.97)/(710-690)*(analogRead(A0)-710)); 
-  Serial.print("El PH es de: ");
-  Serial.println(ph_act);
-
-  // Programacion para sensor de temperatura infrarrojo
-  float value = Get_Temperature_Sample('A');
-  Serial.print("La temperatura en grados celsius es: ");
-  Serial.println(value);
-  if(value>15){
-    digitalWrite(ventilador1, LOW);//Relevador activado
-    digitalWrite(ventilador2, LOW);//Relevador activado
-    digitalWrite(ventilador3, LOW);//Relevador activado
-  }
-  else{
-    digitalWrite(ventilador1, HIGH);//Relevador desactivado
-    digitalWrite(ventilador2, HIGH);//Relevador desactivado
-    digitalWrite(ventilador3, HIGH);//Relevador desactivado
-  }
-  if(value<15){
-    digitalWrite(calentador, LOW);//Relevador activado
-  }
-  else{
-    digitalWrite(calentador, HIGH);//Relevador desactivado
-  }
-  
-  if (Firebase.ready()){
-    if(Firebase.RTDB.setInt(&fbdo, "/sensores/calentador:", value)){
-      Serial.println("PASSED");
+  //Variables necesarias para el funcionamiento, la condicion determina si el sistema esta encendido o apagado, y los valores son para pasar a la 
+  // base de datos 
+  bool condicion;
+  int valorFiltro;
+  int valorVentilador;
+  int valorCalentador;
+  // Se lee el valor de apagado o encendido en la aplicacion y se actualiza el valor de la condicion.
+  if(Firebase.RTDB.getString(&fbdo, "/status/onoff")){
+      Serial.println("Se obtuvo el estado de on/off");
       Serial.println("PATH: " + fbdo.dataPath());
       Serial.println("TYPE: " + fbdo.dataType());
-    }
-    else {
-      Serial.println("FAILED");
-      Serial.println("REASON: " + fbdo.errorReason());
-    }
-    if(Firebase.RTDB.setInt(&fbdo, "/sensores/ph:", ph_act)){
-      Serial.println("PASSED");
-      Serial.println("PATH: " + fbdo.dataPath());
-      Serial.println("TYPE: " + fbdo.dataType());
-    }
-    else {
-      Serial.println("FAILED");
-      Serial.println("REASON: " + fbdo.errorReason());
-    }
-    if(Firebase.RTDB.getInt(&fbdo, "/sensores/filtro:")){
-      Serial.println("PASSED");
-      Serial.println("PATH: " + fbdo.dataPath());
-      Serial.println("TYPE: " + fbdo.dataType());
-      if(fbdo.intData()==1){
-        digitalWrite(filtro, LOW);
+      Serial.println(fbdo.stringData());
+      if(fbdo.stringData()=="1"){
+        condicion = true;
+        Serial.println("ENCENDIDO");
       }
       else{
-        digitalWrite(filtro,HIGH);
-      }      
+        condicion = false;
+        Serial.println("APAGADO"); 
+      }
     }
-    else {
-      Serial.println("FAILED");
-      Serial.println("REASON: " + fbdo.errorReason());
+  if(condicion){
+    
+    digitalWrite(filtro, LOW);
+  // Programacion para sensor de PH
+    float ph_act= 6.97 + ((7.03-6.97)/(710-690)*(analogRead(A0)-710)); 
+    Serial.print("El PH es de: ");
+    Serial.println(ph_act);
+
+    // Programacion para sensor de temperatura infrarrojo
+    float value = Get_Temperature_Sample('A');
+    Serial.print("La temperatura en grados celsius es: ");
+    value = 20;
+    Serial.println(value);
+
+    if(value>=15){
+      digitalWrite(ventilador1, LOW);//Relevador activado
+      digitalWrite(ventilador2, LOW);//Relevador activado
+      digitalWrite(ventilador3, LOW);//Relevador activado
     }
-    if(Firebase.RTDB.setInt(&fbdo, "/sensores/ventiladores:", digitalRead(ventilador1))){
-      Serial.println("PASSED");
-      Serial.println("PATH: " + fbdo.dataPath());
-      Serial.println("TYPE: " + fbdo.dataType());
+    else{
+      digitalWrite(ventilador1, HIGH);//Relevador desactivado
+      digitalWrite(ventilador2, HIGH);//Relevador desactivado
+      digitalWrite(ventilador3, HIGH);//Relevador desactivado
     }
-    else {
-      Serial.println("FAILED");
-      Serial.println("REASON: " + fbdo.errorReason());
-    }
-    if(Firebase.RTDB.setInt(&fbdo, "/sensores/calentador:", digitalRead(calentador))){
-     Serial.println("PASSED");
-      Serial.println("PATH: " + fbdo.dataPath());
-      Serial.println("TYPE: " + fbdo.dataType());
-    }
-    else {
-      Serial.println("FAILED");
-      Serial.println("REASON: " + fbdo.errorReason());
-    }
+    
+    if (Firebase.ready()){
+      value = int(value);
+      if(Firebase.RTDB.setInt(&fbdo, "/sensores/temperatura", value)){
+        Serial.println("Se paso el valor de la temperatura actual");
+        Serial.println("PATH: " + fbdo.dataPath());
+        Serial.println("TYPE: " + fbdo.dataType());
+      }
+      else {
+        Serial.println("FAILED");
+        Serial.println("REASON: " + fbdo.errorReason());
+      }
+      if(Firebase.RTDB.setInt(&fbdo, "/sensores/ph", ph_act)){
+        Serial.println("Se paso el valor de los sensores de PH");
+        Serial.println("PATH: " + fbdo.dataPath());
+        Serial.println("TYPE: " + fbdo.dataType());
+      }
+      else {
+        Serial.println("FAILED");
+        Serial.println("REASON: " + fbdo.errorReason());
+      }
+      if(digitalRead(filtro)==0){
+        valorFiltro=1;
+      }
+      else{
+        valorFiltro=0;
+      }
+      if(Firebase.RTDB.setInt(&fbdo, "/sensores/filtro", valorFiltro)){
+        Serial.println("Se paso el estado del filtro de agua");
+        Serial.println("PATH: " + fbdo.dataPath());
+        Serial.println("TYPE: " + fbdo.dataType());    
+      }
+      else {
+        Serial.println("FAILED");
+        Serial.println("REASON: " + fbdo.errorReason());
+      }
+      
+      if(digitalRead(ventilador1) == 0){
+        valorVentilador = 1;
+      }
+      else{
+        valorVentilador = 0;
+      }
+      if(Firebase.RTDB.setInt(&fbdo, "/sensores/ventiladores", valorVentilador)){
+        Serial.println("Se paso el estado de los ventiladores");
+        Serial.println("PATH: " + fbdo.dataPath());
+        Serial.println("TYPE: " + fbdo.dataType());
+      }
+      else {
+        Serial.println("FAILED");
+        Serial.println("REASON: " + fbdo.errorReason());
+      }
+      if(value < 15){
+        digitalWrite(calentador, 0);
+      }
+      else{
+        digitalWrite(calentador, 1);
+      }
+      if(digitalRead(calentador) == 0){
+        if(Firebase.RTDB.setInt(&fbdo, "/sensores/calentador", 1)){
+          Serial.println("Se paso el estado del calentador");
+          Serial.println("PATH: " + fbdo.dataPath());
+          Serial.println("TYPE: " + fbdo.dataType());
+        }
+        else {
+          Serial.println("FAILED");
+          Serial.println("REASON: " + fbdo.errorReason());
+        }
+      }
+      else{
+        if(Firebase.RTDB.setInt(&fbdo, "/sensores/calentador", 0)){
+          Serial.println("Se paso el estado del calentador");
+          Serial.println("PATH: " + fbdo.dataPath());
+          Serial.println("TYPE: " + fbdo.dataType());
+        }
+        else {
+          Serial.println("FAILED");
+          Serial.println("REASON: " + fbdo.errorReason());
+        }
+      }
+      
   }
   else{
     Serial.println("No se esta conectando con la base de datos. ");
   }
+  Serial.println("###################################################");
+  delay(3000); // 2 segundos delay
+  }
+  // Si el sistema se apaga se apagan los actuadores y se actualizan todos los datos en la base de datos
+  else{
+    Serial.println("La conexion se ha terminado desde la aplicación");
+    //Se apagan todos los actuadores
+    digitalWrite(ventilador1, HIGH);//Relevador desactivado
+    digitalWrite(ventilador2, HIGH);//Relevador desactivado
+    digitalWrite(ventilador3, HIGH);//Relevador desactivado
+    digitalWrite(calentador, HIGH);//Relevador desactivado
+    digitalWrite(filtro, HIGH);
+    // Se actualizan los valores en la firebase
+     if(Firebase.RTDB.setInt(&fbdo, "/sensores/temperatura", 0)){
+      Serial.println("Se paso el valor de la temperatura actual");
+      Serial.println("PATH: " + fbdo.dataPath());
+      Serial.println("TYPE: " + fbdo.dataType());
+    }
+    else {
+      Serial.println("FAILED");
+      Serial.println("REASON: " + fbdo.errorReason());
+    }
+    if(Firebase.RTDB.setInt(&fbdo, "/sensores/ph", 0)){
+      Serial.println("Se paso el valor de los sensores de PH");
+      Serial.println("PATH: " + fbdo.dataPath());
+      Serial.println("TYPE: " + fbdo.dataType());
+    }
+    else {
+      Serial.println("FAILED");
+      Serial.println("REASON: " + fbdo.errorReason());
+    }
+    
+    if(Firebase.RTDB.setInt(&fbdo, "/sensores/filtro", 0)){
+      Serial.println("Se paso el estado del filtro de agua");
+      Serial.println("PATH: " + fbdo.dataPath());
+      Serial.println("TYPE: " + fbdo.dataType());    
+    }
+    else {
+      Serial.println("FAILED");
+      Serial.println("REASON: " + fbdo.errorReason());
+    }
+    if(Firebase.RTDB.setInt(&fbdo, "/sensores/ventiladores", 0)){
+      Serial.println("Se paso el estado de los ventiladores");
+      Serial.println("PATH: " + fbdo.dataPath());
+      Serial.println("TYPE: " + fbdo.dataType());
+    }
+    else {
+      Serial.println("FAILED");
+      Serial.println("REASON: " + fbdo.errorReason());
+    }
+    if(Firebase.RTDB.setInt(&fbdo, "/sensores/calentador", 0)){
+     Serial.println("Se paso el estado del calentador");
+      Serial.println("PATH: " + fbdo.dataPath());
+      Serial.println("TYPE: " + fbdo.dataType());
+    }
+    else {
+      Serial.println("FAILED");
+      Serial.println("REASON: " + fbdo.errorReason());
+    }
+    
+    Serial.println("###################################################");
+    delay(3000);
+  }
 
-  Serial.println("########");
-  delay(2000); // 2 segundos delay
 }
 float Get_Temperature_Sample(char type){
     float temp_value;
