@@ -121,18 +121,20 @@ void loop() {
     // Programacion para sensor de temperatura infrarrojo
     float value = Get_Temperature_Sample('A');
     Serial.print("La temperatura en grados celsius es: ");
-    value = 20;
+    
     Serial.println(value);
 
-    if(value>=15){
+    if(value>=23){
       digitalWrite(ventilador1, LOW);//Relevador activado
       digitalWrite(ventilador2, LOW);//Relevador activado
       digitalWrite(ventilador3, LOW);//Relevador activado
-    }
+      digitalWrite(calentador, HIGH);
+          }
     else{
       digitalWrite(ventilador1, HIGH);//Relevador desactivado
       digitalWrite(ventilador2, HIGH);//Relevador desactivado
       digitalWrite(ventilador3, HIGH);//Relevador desactivado
+      digitalWrite(calentador, LOW);
     }
     
     if (Firebase.ready()){
@@ -186,12 +188,7 @@ void loop() {
         Serial.println("FAILED");
         Serial.println("REASON: " + fbdo.errorReason());
       }
-      if(value < 15){
-        digitalWrite(calentador, 0);
-      }
-      else{
-        digitalWrite(calentador, 1);
-      }
+
       if(digitalRead(calentador) == 0){
         if(Firebase.RTDB.setInt(&fbdo, "/sensores/calentador", 1)){
           Serial.println("Se paso el estado del calentador");
